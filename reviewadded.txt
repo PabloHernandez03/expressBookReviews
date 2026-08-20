@@ -1,0 +1,2 @@
+theia@theia-pablohernan4:/homcurl -X PUT "http://localhost:5000/customer/auth/review/1?review=Excelente%20libro" -b cookies.txt
+{"message":"Review added successfully"}
