@@ -1,0 +1,5 @@
+theia@theia-pablohernan4:/home/project/expressBookReviews$ git remote -v
+origin  https://github.com/PabloHernandez03/expressBookReviews.git (fetch)
+origin  https://github.com/PabloHernandez03/expressBookReviews.git (push)
+upstream        https://github.com/ibm-developer-skills-network/expressBookReviews.git (fetch)
+upstream        https://github.com/ibm-developer-skills-network/expressBookReviews.git (push)
