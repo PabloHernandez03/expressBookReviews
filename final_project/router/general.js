@@ -36,13 +36,75 @@ public_users.post("/register", (req, res) => {
 });
 
 
-// Task 10 - Get all books
+// --------------------------------------------------
+// INTERNAL DATA ENDPOINTS
+// --------------------------------------------------
+
+public_users.get("/data/books", (req, res) => {
+    return res.json(books);
+});
+
+public_users.get("/data/books/isbn/:isbn", (req, res) => {
+
+    const isbn = req.params.isbn;
+
+    if (!books[isbn]) {
+        return res.status(404).json({
+            message: "Book not found"
+        });
+    }
+
+    return res.json(books[isbn]);
+});
+
+public_users.get("/data/books/author/:author", (req, res) => {
+
+    const author = req.params.author;
+    const booksByAuthor = [];
+
+    const keys = Object.keys(books);
+
+    keys.forEach((key) => {
+
+        if (books[key].author === author) {
+            booksByAuthor.push(books[key]);
+        }
+
+    });
+
+    return res.json(booksByAuthor);
+});
+
+public_users.get("/data/books/title/:title", (req, res) => {
+
+    const title = req.params.title;
+    const booksByTitle = [];
+
+    const keys = Object.keys(books);
+
+    keys.forEach((key) => {
+
+        if (books[key].title === title) {
+            booksByTitle.push(books[key]);
+        }
+
+    });
+
+    return res.json(booksByTitle);
+});
+
+
+// --------------------------------------------------
+// TASK 10
+// Get all books using Axios + Async/Await
+// --------------------------------------------------
+
 public_users.get('/', async function (req, res) {
 
     try {
 
         const response = await axios.get(
-            'http://localhost:5000/api/books'
+            'http://localhost:5000/data/books'
         );
 
         return res.json(response.data);
@@ -58,7 +120,11 @@ public_users.get('/', async function (req, res) {
 });
 
 
-// Task 11 - Get book by ISBN
+// --------------------------------------------------
+// TASK 11
+// Get book by ISBN using Axios + Async/Await
+// --------------------------------------------------
+
 public_users.get('/isbn/:isbn', async function (req, res) {
 
     const isbn = req.params.isbn;
@@ -66,15 +132,15 @@ public_users.get('/isbn/:isbn', async function (req, res) {
     try {
 
         const response = await axios.get(
-            `http://localhost:5000/api/books/${isbn}`
+            `http://localhost:5000/data/books/isbn/${isbn}`
         );
 
         return res.json(response.data);
 
     } catch (error) {
 
-        return res.status(500).json({
-            message: "Error getting book"
+        return res.status(404).json({
+            message: "Book not found"
         });
 
     }
@@ -82,7 +148,11 @@ public_users.get('/isbn/:isbn', async function (req, res) {
 });
 
 
-// Task 12 - Get books by author
+// --------------------------------------------------
+// TASK 12
+// Get books by Author using Axios + Async/Await
+// --------------------------------------------------
+
 public_users.get('/author/:author', async function (req, res) {
 
     const author = req.params.author;
@@ -90,7 +160,7 @@ public_users.get('/author/:author', async function (req, res) {
     try {
 
         const response = await axios.get(
-            `http://localhost:5000/api/books/author/${encodeURIComponent(author)}`
+            `http://localhost:5000/data/books/author/${encodeURIComponent(author)}`
         );
 
         return res.json(response.data);
@@ -106,7 +176,11 @@ public_users.get('/author/:author', async function (req, res) {
 });
 
 
-// Task 13 - Get books by title
+// --------------------------------------------------
+// TASK 13
+// Get books by Title using Axios + Async/Await
+// --------------------------------------------------
+
 public_users.get('/title/:title', async function (req, res) {
 
     const title = req.params.title;
@@ -114,7 +188,7 @@ public_users.get('/title/:title', async function (req, res) {
     try {
 
         const response = await axios.get(
-            `http://localhost:5000/api/books/title/${encodeURIComponent(title)}`
+            `http://localhost:5000/data/books/title/${encodeURIComponent(title)}`
         );
 
         return res.json(response.data);
@@ -130,7 +204,10 @@ public_users.get('/title/:title', async function (req, res) {
 });
 
 
+// --------------------------------------------------
 // Get book review
+// --------------------------------------------------
+
 public_users.get('/review/:isbn', function (req, res) {
 
     const isbn = req.params.isbn;
